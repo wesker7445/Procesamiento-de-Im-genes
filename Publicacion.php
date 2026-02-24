@@ -1,54 +1,54 @@
 <?php
-session_start();
-require_once "Connection.php";
+    session_start();
+    require_once "Connection.php";
 
-// --- 1. VERIFICACIÓN DE SESIÓN ---
-$isLoggedIn = isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true;
-$userRole = $isLoggedIn && isset($_SESSION['rol']) ? $_SESSION['rol'] : null;
-$username_session = $isLoggedIn ? $_SESSION['username'] : 'Invitado';
-$fk_usuario = $_SESSION['usuario_id'] ?? 0; // Obtener el ID del usuario
+    // --- 1. VERIFICACIÓN DE SESIÓN ---
+    $isLoggedIn = isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true;
+    $userRole = $isLoggedIn && isset($_SESSION['rol']) ? $_SESSION['rol'] : null;
+    $username_session = $isLoggedIn ? $_SESSION['username'] : 'Invitado';
+    $fk_usuario = $_SESSION['usuario_id'] ?? 0; // Obtener el ID del usuario
 
-// Redirigir si no está logueado
-if (!$isLoggedIn) {
-    header("Location: InicioSesion.php");
-    exit();
-}
-
-$errores = [];
-$error = null; // Para SweetAlert
-
-// --- Obtener el ID del mundial seleccionado de GET (carga inicial) o POST (envío) ---
-$id_mundial_seleccionado = 0; // Inicializar a 0
-
-// 1. Si es POST, obtenemos el ID directamente del campo oculto.
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST['Mundial_Publicacion']) && is_numeric($_POST['Mundial_Publicacion'])) {
-        $id_mundial_seleccionado = (int)$_POST['Mundial_Publicacion'];
+    // Redirigir si no está logueado
+    if (!$isLoggedIn) {
+        header("Location: InicioSesion.php");
+        exit();
     }
 
-// 2. Si es GET, leemos el TOKEN codificado ('data') y lo decodificamos.
-} elseif (isset($_GET['data'])) {
-    $decodificado = base64_decode($_GET['data']);
-    
-    // Validamos que el resultado de la decodificación sea un número
-    if (is_numeric($decodificado)) {
-        $id_mundial_seleccionado = (int)$decodificado;
+    $errores = [];
+    $error = null; // Para SweetAlert
+
+    // --- Obtener el ID del mundial seleccionado de GET (carga inicial) o POST (envío) ---
+    $id_mundial_seleccionado = 0; // Inicializar a 0
+
+    // 1. Si es POST, obtenemos el ID directamente del campo oculto.
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        if (isset($_POST['Mundial_Publicacion']) && is_numeric($_POST['Mundial_Publicacion'])) {
+            $id_mundial_seleccionado = (int)$_POST['Mundial_Publicacion'];
+        }
+
+    // 2. Si es GET, leemos el TOKEN codificado ('data') y lo decodificamos.
+    } elseif (isset($_GET['data'])) {
+        $decodificado = base64_decode($_GET['data']);
+        
+        // Validamos que el resultado de la decodificación sea un número
+        if (is_numeric($decodificado)) {
+            $id_mundial_seleccionado = (int)$decodificado;
+        }
     }
-}
 
-// Si no se encontró el ID, redirigimos.
-if ($id_mundial_seleccionado === 0) {
-    $_SESSION['error'] = "No has seleccionado un mundial válido para publicar.";
-    header("Location: Pagina.php"); 
-    exit();
-}
+    // Si no se encontró el ID, redirigimos.
+    if ($id_mundial_seleccionado === 0) {
+        $_SESSION['error'] = "No has seleccionado un mundial válido para publicar.";
+        header("Location: Pagina.php"); 
+        exit();
+    }
 
-// Ahora, el ID de mundial se usa en la variable de formulario (línea 40)
-// Usamos el ID descifrado en el campo oculto si no es POST.
-$id_mundial = $_POST['Mundial_Publicacion'] ?? $id_mundial_seleccionado;
+    // Ahora, el ID de mundial se usa en la variable de formulario (línea 40)
+    // Usamos el ID descifrado en el campo oculto si no es POST.
+    $id_mundial = $_POST['Mundial_Publicacion'] ?? $id_mundial_seleccionado;
 
-// --- 2. PROCESAMIENTO DEL FORMULARIO (SOLO SI ES POST) ---
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // --- 2. PROCESAMIENTO DEL FORMULARIO (SOLO SI ES POST) ---
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Obtener datos del formulario
     $titulo = $_POST['Titulo_Publicacion'] ?? '';
@@ -143,23 +143,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!empty($errores)) {
         $error = implode("<br>", $errores);
     }
-} // --- FIN DEL BLOQUE `if ($_SERVER["REQUEST_METHOD"] == "POST")` ---
+    } // --- FIN DEL BLOQUE `if ($_SERVER["REQUEST_METHOD"] == "POST")` ---
 
 
-// --- 5. CARGAR DATOS PARA EL FORMULARIO (SE EJECUTA SIEMPRE) ---
+    // --- 5. CARGAR DATOS PARA EL FORMULARIO (SE EJECUTA SIEMPRE) ---
 
-// Cargar Categorías
-$categorias = [];
-$sql_categorias = "SELECT ID_Categorias, Nombre_Categoria FROM categorias ORDER BY Nombre_Categoria ASC";
-$resultado_categorias = $conexion->query($sql_categorias);
-if ($resultado_categorias && $resultado_categorias->num_rows > 0) { 
-    while ($fila = $resultado_categorias->fetch_assoc()) {
-        $categorias[] = $fila;
+    // Cargar Categorías
+    $categorias = [];
+    $sql_categorias = "SELECT ID_Categorias, Nombre_Categoria FROM categorias ORDER BY Nombre_Categoria ASC";
+    $resultado_categorias = $conexion->query($sql_categorias);
+    if ($resultado_categorias && $resultado_categorias->num_rows > 0) { 
+        while ($fila = $resultado_categorias->fetch_assoc()) {
+            $categorias[] = $fila;
+        }
+        $resultado_categorias->free();
     }
-    $resultado_categorias->free();
-}
 
-$conexion->close();
+    $conexion->close();
 ?>
 
 <!DOCTYPE html>
@@ -201,18 +201,19 @@ $conexion->close();
             <?php if ($userRole == 1): ?>
             <li class="admin-dropdown"> <a href="#" class="dropdown-toggle" id="adminToggle"> <i class="fa-solid fa-user-tie"></i> Modo Admin </a>
                 <ul>
-                    <li><a href="/Pagina/Admin/AprobarP.php"> <i class="fa-solid fa-thumbs-up"></i> Aprobar Publicacion</a></li>
-                    <li><a href="/Pagina/Admin/EliminarC.php"> <i class="fa-solid fa-trash"></i>Eliminar Comentario</a></li>
-                    <li><a href="/Pagina/Admin/GestionarM.php"> <i class="fa-solid fa-list-check"></i> Gestionar Mundial</a></li>
-                    <li><a href="/Pagina/Admin/GestionarAdmin.php?tipo=categoria"><i class="fa-solid fa-tag"></i> Gestionar Categorías</a></li>
-                    <li><a href="/Pagina/Admin/GestionarAdmin.php?tipo=pais"><i class="fa-solid fa-flag"></i> Gestionar Países</a></li>
-                    <li><a href="/Pagina/Admin/Mundial.php"> <i class="fa-solid fa-globe"></i> Crear Mundial</a></li>
-                    <li><a href="/Pagina/Admin/Categoria.php?tipo=categoria"><i class="fa-solid fa-tag"></i>Crear Categoría</a></li>
-                    <li><a href="/Pagina/Admin/Categoria.php?tipo=pais"><i class="fa-solid fa-flag"></i>Crear País</a></li>
+                    <li><a href="/VersionAntigua/Admin/AprobarP.php"> <i class="fa-solid fa-thumbs-up"></i> Aprobar Publicacion</a></li>
+                    <li><a href="/VersionAntigua/Admin/EliminarC.php"> <i class="fa-solid fa-trash"></i>Eliminar Comentario</a></li>
+                    <li><a href="/VersionAntigua/Admin/GestionarM.php"> <i class="fa-solid fa-list-check"></i> Gestionar Mundial</a></li>
+                    <li><a href="/VersionAntigua/Admin/GestionarAdmin.php?tipo=categoria"><i class="fa-solid fa-tag"></i> Gestionar Categorías</a></li>
+                    <li><a href="/VersionAntigua/Admin/GestionarAdmin.php?tipo=pais"><i class="fa-solid fa-flag"></i> Gestionar Países</a></li>
+                    <li><a href="/VersionAntigua/Admin/Mundial.php"> <i class="fa-solid fa-globe"></i> Crear Mundial</a></li>
+                    <li><a href="/VersionAntigua/Admin/Categoria.php?tipo=categoria"><i class="fa-solid fa-tag"></i>Crear Categoría</a></li>
+                    <li><a href="/VersionAntigua/Admin/Categoria.php?tipo=pais"><i class="fa-solid fa-flag"></i>Crear País</a></li>
                 </ul>
             </li> 
             <?php endif; ?>
             <li class="push-bottom"> 
+                <li><a href="scanner.php"><i class="fa-solid fa-expand"></i> Modo escaneo</a></li>
                 <a href="MisPosts.php"><i class="fas fa-cog"></i> Perfil</a>
             </li>
         </ul>
