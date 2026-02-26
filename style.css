@@ -21,9 +21,9 @@ body {
     width: 100vw; /* Ocupa el 100% del ancho del viewport */
     min-height: calc(100vh - 80px); /* Ocupa el 100% del alto menos el header */
     margin-left: 0; /* Elimina el margen izquierdo que deja espacio para el sidebar */
-    padding: 0; /* Elimina el padding de main, ya que el formulario tiene su propio margen */
+    padding: 40px 0; /* Elimina el padding de main, ya que el formulario tiene su propio margen */
     display: flex; /* Asegura el centrado del formulario */
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     flex-direction: column;
 }
@@ -1631,6 +1631,417 @@ body.modo-editar .Formulario h2 {
   background-color: #666;
 }
 /* No es necesario definir .eliminar ya que está oculto para Países */
+
+/*Scanner*/
+
+:root {
+    --sidebar-bg: #222;
+    --main-bg: #1a1a1a;
+    --accent-color: #e6e6e6;
+    --btn-scan: #fff;
+}
+
+.scanner-layout {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--main-bg);
+    color: white;
+    overflow: hidden; /* Evita scroll para sentirlo como App */
+}
+        
+.controls-row {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 50px; /* Espacio entre los botones */
+  z-index: 5;
+}
+
+.side-control {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.control-label {
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.8);
+  color: #fff;
+}
+
+.scanner-layout .layout {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+
+/* Contenedor de la Cámara */
+.camera-container {
+  flex-grow: 1;
+  position: relative;
+  margin-left: 0 !important;
+  width: 100vw;
+  background: linear-gradient(135deg, #1a1a1a 25%, #2a2a2a 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-back {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 100; /* Por encima de la cámara */
+  width: 50px;
+  height: 50px;
+  background: rgba(0, 0, 0, 0.5); /* Fondo traslúcido */
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-decoration: none;
+  font-size: 20px;
+  transition: all 0.3s ease;
+}
+
+.btn-back:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+.btn-action-right {
+  position: absolute;
+  top: 20px;
+  right: 20px; /* Se posiciona a la derecha */
+  z-index: 100;
+  width: 50px;
+  height: 50px;
+  background: rgba(0, 0, 0, 0.5); 
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-decoration: none;
+  font-size: 20px;
+  transition: all 0.3s ease;
+}
+
+.btn-action-right:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+    /* Simulación del visor de la cámara */
+.camera-view {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background-color: #000; /* Fondo negro para el video */
+}
+
+/* Guía de escaneo (El cuadro en el centro) */
+.scan-guide {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+  box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.5); /* Oscurece lo de afuera */
+  z-index: 2;
+}
+
+/* Esquinas animadas para la guía */
+.scan-guide::before {
+  content: '';
+  position: absolute;
+  top: -2px; left: -2px; width: 40px; height: 40px;
+  border-top: 4px solid #fff; border-left: 4px solid #fff;
+  border-radius: 20px 0 0 0;
+}
+.scan-guide::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; right: -2px; width: 40px; height: 40px;
+  border-bottom: 4px solid #fff; border-right: 4px solid #fff;
+  border-radius: 0 0 20px 0;
+}
+
+/* Botón de Escaneo Central */
+.scan-button-container {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+}
+
+.btn-scan {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    background-color: white;
+    border: 5px solid rgba(255,255,255,0.3);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 28px;
+    color: #222;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.btn-scan:active {
+  transform: translateX(-50%) scale(0.9); /* Efecto click */
+  background-color: #ddd;
+}
+
+/* Info de ayuda */
+.scan-instructions {
+  position: absolute;
+  top: 30px;
+  background: rgba(0,0,0,0.6);
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-size: 14px;
+  backdrop-filter: blur(5px);
+}
+
+.btn-secondary {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid #fff;
+  backdrop-filter: blur(5px);
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 18px;
+  transition: 0.3s;
+}
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.4);
+  transform: scale(1.1);
+}
+
+
+.split-scan-container {
+  position: relative;
+  width: 85px; /* Un poco más grande para acomodar el contenido */
+  height: 85px;
+  border-radius: 50%;
+  /* Mantenemos el anillo exterior del diseño original */
+  border: 5px solid rgba(255,255,255,0.3);
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  /* Flex para poner los botones lado a lado */
+  display: flex;
+  /* CRUCIAL: Esto recorta los botones cuadrados internos a la forma circular */
+  overflow: hidden;
+  background-color: white;
+  z-index: 10; /* Asegurar que esté por encima */
+}
+
+.split-btn {
+  flex: 1; /* Ambos ocupan el 50% del espacio */
+  height: 100%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column; /* Icono arriba, texto abajo */
+  justify-content: center;
+  align-items: center;
+  color: #222;
+  padding: 0;
+  transition: all 0.2s ease;
+  /* Ajuste fino para que los elementos no queden muy pegados al borde curvo */
+  padding-top: 2px;
+}
+
+/* Estilo para los iconos dentro de la división */
+.split-btn i {
+  font-size: 22px;
+  margin-bottom: 2px;
+}
+
+/* Estilo para las pequeñas etiquetas de texto (opcional) */
+.split-label {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* 3. Estilos específicos para diferenciar izquierda y derecha */
+
+/* Mitad Izquierda (Foto) */
+.split-btn.left {
+  background-color: #f2f2f2; /* Un blanco ligeramente gris para contraste */
+  border-right: 1px solid #d0d0d0; /* La línea divisoria central */
+  padding-right: 5px; /* Compensar visualmente la curva */
+}
+
+/* Mitad Derecha (Scan) */
+.split-btn.right {
+  background-color: #ffffff; /* Blanco puro */
+  padding-left: 5px; /* Compensar visualmente la curva */
+}
+
+/* 4. Efectos Hover y Active (Click) */
+
+.split-btn:hover {
+  background-color: #e6e6e6; /* Gris más oscuro al pasar el mouse */
+  color: #000;
+}
+
+.split-btn:active {
+  background-color: #cccccc; /* Efecto de click */
+  transform: scale(0.98); /* Ligero efecto de pulsación */
+}
+
+.scanner-layout main {
+    width: 100vw;
+    margin-left: 0;
+    padding: 0;
+}
+
+
+/* Contenedor principal similar a .api-results-container */
+.trivia-container {
+    background-color: #474747;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    margin-bottom: 50px;
+    margin-top: 30px;
+    height: 90%;
+    max-height: 1500px;
+    width: 90%; /* Ocupa más ancho en dispositivos pequeños */
+    max-width: 1200px; /* Un poco más amplio para resaltar */
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.trivia-content {
+    padding: 20px;
+}
+
+.trivia-question-card {
+    background-color: #333; /* Fondo oscuro como tus inputs */
+    border-radius: 10px;
+    padding: 20px;
+    border-left: 4px solid #6cd085; /* El acento verde de tus match-cards */
+}
+
+.question-text {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Grilla de opciones */
+.trivia-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Dos columnas */
+    gap: 15px;
+}
+
+.trivia-option {
+    background-color: #555;
+    color: white;
+    border: 1px solid #666;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.trivia-option:hover {
+    background-color: #6cd085;
+    color: #000;
+    transform: translateY(-2px);
+}
+
+.trivia-feedback {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: rgba(108, 208, 133, 0.2);
+    color: #6cd085;
+    text-align: center;
+    font-weight: bold;
+}
+
+#timer-display {
+    transition: color 0.3s ease, transform 0.3s ease;
+    display: inline-block;
+}
+
+/* Puedes añadir una clase vía JS cuando queden 5 segundos */
+.timer-low {
+    color: #ff0000 !important;
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+/* Mejora para los botones deshabilitados */
+.trivia-option:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+    transform: none !important;
+}
+
+.btn-regresar {
+    background-color: #747474; /* Gris oscuro para contrastar */
+    color: #6cd085;           /* Tu verde característico */
+    padding: 8px 18px;
+    border-radius: 25px;
+    font-weight: bold;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.btn-regresar:hover {
+    background-color: #6cd085;
+    color: #000;
+    transform: translateX(-5px); /* Pequeño efecto de movimiento a la izquierda */
+}
+
+.btn-regresar i {
+    font-size: 12px;
+}
 
 /*----------------------------------------------*/
 
