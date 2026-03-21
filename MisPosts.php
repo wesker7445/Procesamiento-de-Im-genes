@@ -170,6 +170,7 @@
             
             </ul>
             <li><a href="scanner.php"><i class="fa-solid fa-expand"></i> Modo escaneo</a></li>
+            <li><a href="Ayuda.php"><i class="fa-solid fa-question"></i> Ayuda </a></li>
         </nav>
 
         <main class="main-stacked">

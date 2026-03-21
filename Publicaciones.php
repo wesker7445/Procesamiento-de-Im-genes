@@ -263,6 +263,7 @@
             <?php endif; ?>
             <li class="push-bottom"> 
                 <li><a href="scanner.php"><i class="fa-solid fa-expand"></i> Modo escaneo</a></li>
+                <li><a href="Ayuda.php"><i class="fa-solid fa-question"></i> Ayuda </a></li>
                 <a href="MisPosts.php"><i class="fas fa-cog"></i> Perfil</a>
             </li>
         </ul>
