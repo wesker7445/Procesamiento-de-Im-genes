@@ -189,6 +189,7 @@ nav ul li.container{
 /* --- BARRA VERTICAL --- */
 .layout {
   display: flex;
+  flex-direction: column;
 }
 
 /* La barra lateral */
@@ -198,10 +199,11 @@ nav ul li.container{
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding-top: 10px;
+    padding-top: 0;
     
-    /* --- ¡CAMBIOS CLAVE! --- */
-    position: fixed;   /* <--- CAMBIO a fixed */
+    position: static;
+    width: 100%;
+    height: auto;
     left: 0;
     top: 80px;         /* Empieza justo donde termina el header (80px) */
     height: calc(100vh - 80px); /* Ocupa el resto de la altura */
@@ -213,10 +215,11 @@ nav ul li.container{
   padding: 0;
   margin: 0;
   width: 100%;
-
+  justify-content: space-around;
   height: 100%; /* Permite al ul ocupar toda la altura del sidebar (100vh - 80px) */
   display: flex; /* Convierte el ul en un contenedor flex */
-  flex-direction: column; /* Coloca los elementos li en columna */
+  flex-direction: row; /* Coloca los elementos li en columna */
+  flex-wrap: wrap;
   padding-bottom: 20px;
 }
 
@@ -244,10 +247,12 @@ nav ul li.container{
 .sidebar a {
   display: flex; /* CAMBIO CLAVE: Permite usar flexbox */
   align-items: center; /* Centra el ícono y el texto verticalmente */
-  gap: 10px; /* AÑADIDO: Espacio de 10px entre el ícono y el texto */
+  gap: 5px; /* AÑADIDO: Espacio de 10px entre el ícono y el texto */
   padding: 15px 20px;
   color: #fff;
   font-weight: bold;
+  font-size: 14px;
+  flex-direction: column;
   text-decoration: none;
   transition: background-color 0.3s;
 }
@@ -263,11 +268,18 @@ nav ul li.container{
     box-sizing: border-box; /* Incluye el padding en el cálculo del ancho */
 }
 
+.sidebar span {
+  font-size: 10px; /* Texto más pequeño para que quepa todo */
+}
+
+.sidebar .admin-dropdown, .sidebar .push-bottom {
+  width: 100%;
+}
 
 main {
-  width: calc(100% - 220px);
-  margin-left: 220px;
-  padding: 0 20px 20px 20px;         
+  width: 100%;
+  margin-left: 0;
+  padding: 10px;         
   display: flex;        
   justify-content: center; 
   flex-direction: column;  
@@ -322,10 +334,16 @@ main.publicacion article {
   
 }
 
+.publicacion, .publicacion-card, .admin-content, .Formulario {
+  padding: 20px 15px; /* Menos espacio interno */
+  margin: 20px 0;
+  width: 100%;
+}
+
 .publicacion h1{
   text-align: center;
   font-weight: bold;
-  font-size: 2.5em; 
+  font-size: 1.8em; 
   margin-bottom: 20px; 
   line-height: 1.2;
   color: #ffffff;
@@ -510,6 +528,14 @@ main.publicacion article {
     text-align: center;
 }
 
+.trivia-options {
+    grid-template-columns: 1fr; /* Una sola columna en móvil */
+}
+
+.match-teams {
+    font-size: 0.9rem;
+}
+
 .multimedia-container video, 
 .multimedia-container img {
     /* **RESPUESTA A TU PREGUNTA DE CUBRIR ESPACIO** */
@@ -684,8 +710,8 @@ footer{
     overflow: hidden;
     background-color: rgb(34, 34, 34);
     align-items: center;
-    width: calc(100% - 220px);
-    margin-left: 220px;
+    width: 100%;
+    margin-left: 0;
   }
 
   .Resaltado{

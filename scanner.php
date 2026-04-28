@@ -10,6 +10,7 @@
         <script src="js/aframe.min.js"></script>
         <script src="js/aframe-ar.js"></script>
         <script src="app.js" defer></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
 
     <body>
