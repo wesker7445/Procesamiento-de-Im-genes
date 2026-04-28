@@ -250,14 +250,14 @@
             <?php if ($userRole == 1): ?>
             <li class="admin-dropdown"> <a href="#" class="dropdown-toggle" id="adminToggle"> <i class="fa-solid fa-user-tie"></i> Modo Admin </a>
                 <ul>
-                    <li><a href="/VersionAntigua/Admin/AprobarP.php"> <i class="fa-solid fa-thumbs-up"></i> Aprobar Publicacion</a></li>
-                    <li><a href="/VersionAntigua/Admin/EliminarC.php"> <i class="fa-solid fa-trash"></i>Eliminar Comentario</a></li>
-                    <li><a href="/VersionAntigua/Admin/GestionarM.php"> <i class="fa-solid fa-list-check"></i> Gestionar Mundial</a></li>
-                    <li><a href="/VersionAntigua/Admin/GestionarAdmin.php?tipo=categoria"><i class="fa-solid fa-tag"></i> Gestionar Categorías</a></li>
-                    <li><a href="/VersionAntigua/Admin/GestionarAdmin.php?tipo=pais"><i class="fa-solid fa-flag"></i> Gestionar Países</a></li>
-                    <li><a href="/VersionAntigua/Admin/Mundial.php"> <i class="fa-solid fa-globe"></i> Crear Mundial</a></li>
-                    <li><a href="/VersionAntigua/Admin/Categoria.php?tipo=categoria"><i class="fa-solid fa-tag"></i>Crear Categoría</a></li>
-                    <li><a href="/VersionAntigua/Admin/Categoria.php?tipo=pais"><i class="fa-solid fa-flag"></i>Crear País</a></li>
+                    <li><a href="Admin/AprobarP.php"> <i class="fa-solid fa-thumbs-up"></i> Aprobar Publicacion</a></li>
+                    <li><a href="Admin/EliminarC.php"> <i class="fa-solid fa-trash"></i>Eliminar Comentario</a></li>
+                    <li><a href="Admin/GestionarM.php"> <i class="fa-solid fa-list-check"></i> Gestionar Mundial</a></li>
+                    <li><a href="Admin/GestionarAdmin.php?tipo=categoria"><i class="fa-solid fa-tag"></i> Gestionar Categorías</a></li>
+                    <li><a href="Admin/GestionarAdmin.php?tipo=pais"><i class="fa-solid fa-flag"></i> Gestionar Países</a></li>
+                    <li><a href="Admin/Mundial.php"> <i class="fa-solid fa-globe"></i> Crear Mundial</a></li>
+                    <li><a href="Admin/Categoria.php?tipo=categoria"><i class="fa-solid fa-tag"></i>Crear Categoría</a></li>
+                    <li><a href="Admin/Categoria.php?tipo=pais"><i class="fa-solid fa-flag"></i>Crear País</a></li>
                 </ul>
             </li> 
             <?php endif; ?>
@@ -366,7 +366,7 @@
                                 <?php if (!empty($Imagen_URL)): ?>
                                     
                                     <div class="post-image-full-container">
-                                        <img src="<?= $Imagen_URL ?>" alt="Mundial: <?php echo $Nombre_Torneo; ?>">                             
+                                        <img src="<?= $mundial['Imagen_URL'] ?>" alt="Mundial: <?php echo $Nombre_Torneo; ?>">                             
                                     </div>
                                 <?php endif; ?>
 
@@ -404,6 +404,8 @@
                                         </div>
                                     </div>
                                 <?php endif; ?>
+                                <br><br>
+                                <?php include("stats.php"); ?>
                             </div>
                             
                         </article>

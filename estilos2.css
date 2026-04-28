@@ -1,0 +1,173 @@
+body {
+    margin: 0;
+    font-family: Arial;
+    overflow: hidden;
+    background: black;
+}
+
+a-scene {
+    pointer-events: none; /* 👈 permite que los clicks pasen */
+}
+
+.header, .footer, #btnInfo, #infoPanel, #filtros {
+    pointer-events: auto; /* 👈 reactivamos interacción en UI */
+}
+
+/* HEADER */
+.header {
+    position: absolute;
+    top: 0;
+    width: 99%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* 👈 importante */
+    justify-content: center;
+    background: rgba(0,0,0,0.5);
+    color: white;
+    padding: 10px 15px;
+    z-index: 10;
+}
+
+.header button {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+    font-size: 40px;
+}
+
+.btn-back {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 100; /* Por encima de la cámara */
+  width: 50px;
+  height: 50px;
+  background: rgba(0, 0, 0, 0.5); /* Fondo traslúcido */
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-decoration: none;
+  font-size: 20px;
+  transition: all 0.3s ease;
+}
+
+.btn-back:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+.btn-action-right {
+  position: absolute;
+  top: 20px;
+  right: 20px; /* Se posiciona a la derecha */
+  z-index: 100;
+  width: 50px;
+  height: 50px;
+  background: rgba(0, 0, 0, 0.5); 
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-decoration: none;
+  font-size: 20px;
+  transition: all 0.3s ease;
+}
+
+/* FOOTER */
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 15px;
+}
+
+.side-control {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.side-control button {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid #fff;
+  backdrop-filter: blur(5px);
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 18px;
+  transition: 0.3s;
+}
+.side-control button:hover {
+  background: rgba(255, 255, 255, 0.4);
+  transform: scale(1.1);
+}
+
+.control-label {
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.8);
+  color: #fff;
+}
+
+/* BOTÓN INFO */
+#btnInfo {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    display: none;
+    padding: 20px;
+    font-size: 50px;
+    border-radius: 16px;
+  background: rgba(0, 0, 0, 0.5); 
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* PANEL INFO */
+#infoPanel {
+    position: absolute;
+    bottom: 80px;
+    width: 100%;
+    background: white;
+    display: none;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* FILTROS */
+#filtros {
+    position: absolute;
+    bottom: 80px;
+    background: none;
+    display: none;
+}
+
+#filtros button {    
+    padding: 20px;
+    font-size: 20px;
+    border-radius: 16px;
+  background: rgba(0, 0, 0, 0.5); 
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+#escenaAR {
+    transition: opacity 0.5s ease;
+}
